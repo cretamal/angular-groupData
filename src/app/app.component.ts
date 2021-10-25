@@ -10,8 +10,8 @@ export class AppComponent implements OnInit {
   data: any = [];
   listDoctors: any = [];
 
-  dataReduce:any = [];
-  resultReduce:any =[];
+  dataReduce: any = [];
+  resultReduce: any = [];
   constructor() {
     this.data = [
       {
@@ -436,26 +436,26 @@ export class AppComponent implements OnInit {
     this.extractDoctors();
   }
 
- 
- 
   extractDoctors() {
     this.data.forEach((item, index) => {
+      const objBono = Object.assign(item['prestador'], {
+        typePrestador: 'prestador',
+      });
+      const objPrestador = Object.assign(item['medico'], {
+        typePrestador: 'medico',
+      });
+
       console.log('extractDoctors', {
         item: item.medico.rut,
         index: index,
       });
-      const objBono       =  Object.assign(item['prestador'], {typePrestador:'prestador'});
-      const objMedico     =  Object.assign(item['medico'], {typePrestador:'medico'});      
-        // verificar si el rut del doctor ya existe
 
-
-      // this.listDoctors.push(item.prestador);      
-
+      // verificar si el rut del doctor ya existe
+      // this.listDoctors.push(item.prestador);
     });
     const reduce = this.groupArrayOfObjects(this.listDoctors, 'rut');
-    console.log('********', reduce);
+    // console.log('********', reduce);
   }
-  
 
   groupArrayOfObjects(list: any, key: any) {
     /*console.log('groupArrayOfObjects', {
