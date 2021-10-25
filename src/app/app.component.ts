@@ -1,3 +1,4 @@
+import { newArray } from '@angular/compiler/src/util';
 import { Component, OnInit, VERSION } from '@angular/core';
 
 @Component({
@@ -12,6 +13,7 @@ export class AppComponent implements OnInit {
 
   dataReduce: any = [];
   resultReduce: any = [];
+  merge_BonoConsulta: any = [];
   constructor() {
     this.data = [
       {
@@ -45,7 +47,7 @@ export class AppComponent implements OnInit {
           rut: '096942400-2',
           rutFormateado: null,
           email: null,
-          direccion: 'NVA. PROVIDENCIA N°  1920',
+          direccion: '1 NVA. PROVIDENCIA N°  1920',
           latitud: -33.425156,
           longitud: -70.61335,
           comuna: {
@@ -114,7 +116,7 @@ export class AppComponent implements OnInit {
           rut: '096942400-2',
           rutFormateado: null,
           email: null,
-          direccion: 'NVA. PROVIDENCIA N°  1920',
+          direccion: '2- NVA. PROVIDENCIA N°  1920',
           latitud: -33.425156,
           longitud: -70.61335,
           comuna: {
@@ -183,7 +185,7 @@ export class AppComponent implements OnInit {
           rut: '096942400-2',
           rutFormateado: null,
           email: null,
-          direccion: 'NVA. PROVIDENCIA N°  1920',
+          direccion: '3- NVA. PROVIDENCIA N°  1920',
           latitud: -33.425156,
           longitud: -70.61335,
           comuna: {
@@ -437,24 +439,22 @@ export class AppComponent implements OnInit {
   }
 
   extractDoctors() {
+    const AuxPrestadore = new Array();
     this.data.forEach((item, index) => {
-      const objBono = Object.assign(item['prestador'], {
-        typePrestador: 'prestador',
+      const medico = Object.assign(item['medico'], {
+        prestadores: [item.prestador],
       });
-      const objPrestador = Object.assign(item['medico'], {
-        typePrestador: 'medico',
-      });
-
-      console.log('extractDoctors', {
-        item: item.medico.rut,
-        index: index,
-      });
-
       // verificar si el rut del doctor ya existe
-      // this.listDoctors.push(item.prestador);
+      this.listDoctors.push(medico);
     });
-    const reduce = this.groupArrayOfObjects(this.listDoctors, 'rut');
-    // console.log('********', reduce);
+    this.dataReduce = this.groupArrayOfObjects(this.listDoctors, 'rut');
+    console.log('****reduce****', this.dataReduce);
+    if (this.dataReduce != []) {
+      const AuxDataresult = Object.entries(this.dataReduce);
+      AuxDataresult.forEach((res) => {
+        console.log('AuxDataresult', res);
+      });
+    }
   }
 
   groupArrayOfObjects(list: any, key: any) {
@@ -464,6 +464,7 @@ export class AppComponent implements OnInit {
     });*/
     return list.reduce(function (rv, x) {
       (rv[x[key]] = rv[x[key]] || []).push(x);
+      console.log('X', x);
       return rv;
     }, {});
   }
