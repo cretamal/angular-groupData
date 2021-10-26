@@ -1,3 +1,4 @@
+import { identifierModuleUrl } from '@angular/compiler/src/parse_util';
 import { newArray } from '@angular/compiler/src/util';
 import { Component, OnInit, VERSION } from '@angular/core';
 
@@ -442,30 +443,45 @@ export class AppComponent implements OnInit {
     const AuxPrestadore = new Array();
     this.data.forEach((item, index) => {
       const medico = Object.assign(item['medico'], {
-        prestadores: [item.prestador],
+        prestadores: item.prestador,
       });
       // verificar si el rut del doctor ya existe
       this.listDoctors.push(medico);
     });
     this.dataReduce = this.groupArrayOfObjects(this.listDoctors, 'rut');
-    console.log('****reduce****', this.dataReduce);
-    if (this.dataReduce != []) {
-      const AuxDataresult = Object.entries(this.dataReduce);
-      AuxDataresult.forEach((res) => {
-        console.log('AuxDataresult', res);
-      });
-    }
+    // console.log('****reduce****', this.dataReduce);
+    this.cleanDataBono(this.dataReduce);
   }
 
   groupArrayOfObjects(list: any, key: any) {
     /*console.log('groupArrayOfObjects', {
       list: list,
       key: key,
-    });*/
+    });
+    */
     return list.reduce(function (rv, x) {
       (rv[x[key]] = rv[x[key]] || []).push(x);
-      console.log('X', x);
+      //console.log('X', x);
       return rv;
     }, {});
+  }
+
+  cleanDataBono(_data: any) {
+    Object.entries(_data).forEach(([key, value]) => console.log(key, value));
+
+    const objBono = {
+      medico: _data[0],
+    };
+    console.log('_data', {
+      _data: _data,
+      objBono: objBono,
+    });
+
+    /*_data.forEach((item, index) => {
+      const dataObjPrestadores = Object.entries(item[1]);
+      console.log('item', dataObjPrestadores);
+      // console.log('index', index);      
+    });
+    */
   }
 }
